@@ -36,7 +36,7 @@ export default function RegisterScreen({ navigation }) {
     <View style={[styles.container, dark ? styles.containerDark : null]}>
       <TouchableOpacity style={styles.back} onPress={() => navigation.goBack()} />
 
-      <Image source={require('../../assets/splash-icon.png')} style={styles.logo} />
+      <Image source={require('../../assets/logo.png')} style={styles.logo} />
       <Text style={[styles.appName, dark ? styles.appNameDark : null]}>TravelBuddy</Text>
 
       <View style={styles.form}>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f3f6f5', paddingTop: 28, paddingHorizontal: 16, paddingBottom: 12 },
   containerDark: { backgroundColor: '#081f1d' },
   back: { width: 30, height: 30 },
-  logo: { width: 70, height: 70, alignSelf: 'center', marginTop: 10 },
+  logo: { width: 90, height: 90, alignSelf: 'center', marginTop: 10, resizeMode: 'contain' },
   appName: { fontSize: 28, fontWeight: '800', textAlign: 'center', marginTop: 8 },
   appNameDark: { color: '#e6fff9' },
   form: { marginTop: 20 },

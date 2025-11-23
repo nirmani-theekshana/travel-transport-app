@@ -8,6 +8,12 @@ export default function FavouriteScreen({ navigation }) {
   const favourites = useSelector(state => state.favourite.list);
   const dark = useSelector(state => state.theme.dark);
 
+  const IMAGE_MAP = {
+    'colombo-kandy-fallback': require('../../assets/colombo-kandy.png'),
+    'colombo-galle-fallback': require('../../assets/colombo-galle.png'),
+    'colombo-ella-fallback': require('../../assets/colombo-ella.png')
+  };
+
   return (
     <View style={[styles.container, dark ? styles.containerDark : null]}>
 
@@ -16,7 +22,7 @@ export default function FavouriteScreen({ navigation }) {
           <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.iconTouchable}>
             <Feather name="arrow-left" size={20} color={'#fff'} />
           </TouchableOpacity>
-          <Text style={[styles.headerTitle, dark ? styles.headerTitleDark : null]}>Your Favourite Routes ❤️</Text>
+          <Text style={[styles.headerTitle, dark ? styles.headerTitleDark : null]}>Your Favourite Routes</Text>
         </View>
         <View style={{ width: 30 }} />
       </View>
@@ -31,7 +37,13 @@ export default function FavouriteScreen({ navigation }) {
             <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Home', { screen: 'Details', params: { transport: item } })}>
 
               <Image
-                source={{ uri: item.thumbnail }}
+                source={(
+                  (item && item.id && IMAGE_MAP[item.id]) ||
+                  (item && item.title && item.title.toLowerCase().includes('kandy') && IMAGE_MAP['colombo-kandy-fallback']) ||
+                  (item && item.title && item.title.toLowerCase().includes('galle') && IMAGE_MAP['colombo-galle-fallback']) ||
+                  (item && item.title && item.title.toLowerCase().includes('ella') && IMAGE_MAP['colombo-ella-fallback']) ||
+                  (item && item.thumbnail ? (typeof item.thumbnail === 'string' ? { uri: item.thumbnail } : item.thumbnail) : require('../../assets/logo.png'))
+                )}
                 style={styles.image}
               />
 

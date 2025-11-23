@@ -11,7 +11,7 @@ export default function SplashScreen({ navigation }) {
       <Text style={[styles.title, dark ? styles.titleDark : null]}>TravelBuddy</Text>
       <Text style={[styles.subtitle, dark ? styles.subtitleDark : null]}>Plan your journey.\nTravel with confidence.</Text>
 
-      <Image source={require('../../assets/splash-icon.png')} style={styles.logo} />
+      <Image source={require('../../assets/logo.png')} style={styles.logo} />
 
       <TouchableOpacity
         style={styles.button}
@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 24
   },
   logo: {
-    width: 160,
-    height: 160,
+    width: 450,
+    height: 450,
     resizeMode: 'contain',
     marginTop: 8
   },

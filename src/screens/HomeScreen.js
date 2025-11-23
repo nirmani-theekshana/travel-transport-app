@@ -22,6 +22,51 @@ export default function HomeScreen({ navigation }) {
     item.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Build the routes to display: Colombo->Kandy and Colombo->Galle (in that order).
+  // Prefer API matches; if missing, provide fallback objects so both cards always appear.
+  const findFirstMatch = (words) => filteredRoutes.find(item => {
+    const t = (item.title || '').toLowerCase();
+    return words.every(w => t.includes(w));
+  });
+
+  const matchKandy = findFirstMatch(['colombo', 'kandy']);
+  const matchGalle = findFirstMatch(['colombo', 'galle']);
+  const matchElla = findFirstMatch(['colombo', 'ella']);
+
+  const displayRoutes = [];
+
+  if (matchKandy) displayRoutes.push(matchKandy);
+  else displayRoutes.push({
+    id: 'colombo-kandy-fallback',
+    title: 'Colombo to Kandy',
+    thumbnail: 'https://via.placeholder.com/600x300.png?text=Colombo+to+Kandy',
+    description: 'Direct transport route from Colombo to Kandy.'
+  });
+
+  if (matchGalle) {
+    // avoid duplicating the same item
+    if (!displayRoutes.some(r => r.id === matchGalle.id)) displayRoutes.push(matchGalle);
+  } else {
+    displayRoutes.push({
+      id: 'colombo-galle-fallback',
+      title: 'Colombo to Galle',
+      thumbnail: 'https://via.placeholder.com/600x300.png?text=Colombo+to+Galle',
+      description: 'Direct transport route from Colombo to Galle.'
+    });
+  }
+
+  // Colombo -> Ella (add after Galle)
+  if (matchElla) {
+    if (!displayRoutes.some(r => r.id === matchElla.id)) displayRoutes.push(matchElla);
+  } else {
+    displayRoutes.push({
+      id: 'colombo-ella-fallback',
+      title: 'Colombo to Ella',
+      thumbnail: 'https://via.placeholder.com/600x300.png?text=Colombo+to+Ella',
+      description: 'Scenic route from Colombo to Ella through the hill country.'
+    });
+  }
+
   const openMapForQuery = (q) => {
     if (!q) return;
     const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
@@ -55,11 +100,11 @@ export default function HomeScreen({ navigation }) {
 
       {/* Transport List (2 columns) */}
       <FlatList
-        data={filteredRoutes}
+        data={displayRoutes}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <TransportCard route={item} />}
         showsVerticalScrollIndicator={false}
-        numColumns={2}
+        numColumns={1}
       />
 
     </View>

@@ -87,11 +87,25 @@ export default function ProfileScreen({ navigation }) {
 
       {/* Editable card */}
       <View style={[styles.infoCard, dark ? styles.infoCardDark : null]}>
-        <Text style={styles.label}>User Name</Text>
-        <TextInput value={username} onChangeText={setUsername} style={[styles.input, dark ? styles.inputDark : null]} />
+        <Text style={[styles.label, dark ? styles.labelDark : null]}>User Name</Text>
+        <TextInput
+          value={username}
+          onChangeText={setUsername}
+          style={[styles.input, dark ? styles.inputDark : null, { color: dark ? '#fff' : '#000' }]}
+          placeholder="Enter your name"
+          placeholderTextColor={dark ? '#cdeee8' : '#666'}
+        />
 
-        <Text style={styles.label}>Email</Text>
-        <TextInput value={email} onChangeText={setEmail} style={[styles.input, dark ? styles.inputDark : null]} keyboardType="email-address" />
+        <Text style={[styles.label, dark ? styles.labelDark : null]}>Email</Text>
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          style={[styles.input, dark ? styles.inputDark : null, { color: dark ? '#fff' : '#000' }]}
+          keyboardType="email-address"
+          placeholder="you@example.com"
+          placeholderTextColor={dark ? '#cdeee8' : '#666'}
+          autoCapitalize="none"
+        />
 
         <TouchableOpacity style={[styles.saveBtn, dark ? styles.saveBtnDark : null]} onPress={handleSave}>
           <Text style={[styles.saveText, dark ? styles.saveTextDark : null]}>Save</Text>
@@ -192,7 +206,8 @@ const styles = StyleSheet.create({
   },
   infoCardDark: { backgroundColor: '#0b574f' },
 
-  label: { fontWeight: '600', marginBottom: 6 },
+  label: { fontWeight: '600', marginBottom: 6, color: '#06312e' },
+  labelDark: { color: '#e6fff9' },
   input: {
     backgroundColor: '#eaf9f6',
     padding: 10,
