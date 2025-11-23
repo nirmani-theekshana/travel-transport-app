@@ -45,7 +45,7 @@ export default function LoginScreen({ navigation }) {
     <View style={[styles.container, dark ? styles.containerDark : null]}>
       <TouchableOpacity style={styles.back} onPress={() => navigation.navigate('Splash')} />
 
-      <Image source={require('../../assets/splash-icon.png')} style={styles.logo} />
+      <Image source={require('../../assets/logo.png')} style={styles.logo} />
       <Text style={[styles.appName, dark ? styles.appNameDark : null]}>TravelBuddy</Text>
 
       <View style={styles.form}>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f3f6f5', paddingTop: 28, paddingHorizontal: 16, paddingBottom: 12 },
   containerDark: { backgroundColor: '#081f1d' },
   back: { width: 30, height: 30 },
-  logo: { width: 80, height: 80, alignSelf: 'center', marginTop: 10 },
+  logo: { width: 100, height: 100, alignSelf: 'center', marginTop: 10, resizeMode: 'contain' },
   appName: { fontSize: 30, fontWeight: '800', textAlign: 'center', marginTop: 12 },
   appNameDark: { color: '#e6fff9' },
   form: { marginTop: 28 },

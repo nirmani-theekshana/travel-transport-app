@@ -11,6 +11,14 @@ import {
 import { Feather } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleFavourite } from '../redux/favouriteSlice';
+import ROUTE_DESCRIPTIONS from '../data/routeDescriptions';
+
+// Local image map for details view
+const IMAGE_MAP = {
+  'colombo-kandy-fallback': require('../../assets/colombo-kandy.png'),
+  'colombo-galle-fallback': require('../../assets/colombo-galle.png'),
+  'colombo-ella-fallback': require('../../assets/colombo-ella.png')
+};
 
 export default function DetailsScreen({ route, navigation }) {
 
@@ -25,8 +33,23 @@ export default function DetailsScreen({ route, navigation }) {
     dispatch(toggleFavourite(transport));
   };
 
+  // select the appropriate route details by id or title keywords
+  const selectDetailsForTransport = (t) => {
+    if (!t) return ROUTE_DESCRIPTIONS['colombo-kandy-fallback'];
+    // prefer exact id match
+    if (t.id && ROUTE_DESCRIPTIONS[t.id]) return ROUTE_DESCRIPTIONS[t.id];
+    const title = (t.title || '').toLowerCase();
+    if (title.includes('galle')) return ROUTE_DESCRIPTIONS['colombo-galle-fallback'];
+    if (title.includes('ella')) return ROUTE_DESCRIPTIONS['colombo-ella-fallback'];
+    if (title.includes('kandy')) return ROUTE_DESCRIPTIONS['colombo-kandy-fallback'];
+    // fallback to kandy
+    return ROUTE_DESCRIPTIONS['colombo-kandy-fallback'];
+  };
+
+  const details = selectDetailsForTransport(transport);
+
   const openMap = () => {
-    const q = transport?.title || 'Colombo to Kandy';
+    const q = details?.mapQuery || transport?.title || 'Colombo to Kandy';
     const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
     Linking.openURL(url).catch(err => console.log('Could not open map', err));
   };
@@ -51,8 +74,17 @@ export default function DetailsScreen({ route, navigation }) {
       <ScrollView contentContainerStyle={{ paddingTop: 10, paddingBottom: 100 }}>
 
         {/* Route Image */}
-        <Image 
-          source={{ uri: transport?.thumbnail }}
+        <Image
+          source={(
+            // prefer explicit mapping by transport id -> IMAGE_MAP
+            (transport && transport.id && IMAGE_MAP[transport.id]) ||
+            // prefer mapping by selected details id
+            (details && details.id && IMAGE_MAP[details.id]) ||
+            // use transport thumbnail if provided (string -> uri)
+            (transport && transport.thumbnail ? (typeof transport.thumbnail === 'string' ? { uri: transport.thumbnail } : transport.thumbnail) : null) ||
+            // final fallback: app logo
+            require('../../assets/logo.png')
+          )}
           style={styles.routeImage}
         />
 
@@ -60,40 +92,37 @@ export default function DetailsScreen({ route, navigation }) {
         <View style={[styles.infoCard, dark ? styles.infoCardDark : null]}>
           <Text style={[styles.title, dark ? styles.titleDark : null]}>Description</Text>
           <Text style={[styles.description, dark ? styles.textDark : null]}>
-            This express bus service connects Colombo and Kandy with frequent departures
-            throughout the day. It offers both AC and Non-AC buses, comfortable seating
-            and quick access to major towns along the way. It is ideal for daily
-            commuters and tourists.
+            {details?.description}
           </Text>
         </View>
 
         {/* Schedule Section */}
         <View style={[styles.infoCard, dark ? styles.infoCardDark : null]}>
           <Text style={styles.title}>Schedule & Timings</Text>
-
-          <Text style={styles.text}>• First Bus: 5:00 AM</Text>
-          <Text style={styles.text}>• Last Bus: 10:00 PM</Text>
-          <Text style={styles.text}>• Frequency: Every 30 minutes</Text>
-          <Text style={styles.text}>• Travel Duration: Approx. 3 hours</Text>
+          {details?.schedule?.map((s, i) => (
+            <Text key={i} style={styles.text}>• {s}</Text>
+          ))}
+          <Text style={styles.text}>• Travel Duration: {details?.duration}</Text>
 
           <Text style={styles.subTitle}>Ticket Prices:</Text>
-          <Text style={styles.text}>• Non-AC: Rs. 320</Text>
-          <Text style={styles.text}>• AC: Rs. 500</Text>
+          {details?.ticketPrice?.map((p, i) => (
+            <Text key={i} style={styles.text}>• {p}</Text>
+          ))}
         </View>
 
         {/* Route Highlights */}
         <View style={[styles.infoCard, dark ? styles.infoCardDark : null]}>
           <Text style={[styles.title, dark ? styles.titleDark : null]}>Route Highlights</Text>
-          <Text style={styles.text}>• Passes through Kadawatha, Warakapola & Peradeniya</Text>
-          <Text style={styles.text}>• Scenic hill country views</Text>
-          <Text style={styles.text}>• Popular with workers, students & tourists</Text>
+          {details?.highlights?.map((h, i) => (
+            <Text key={i} style={styles.text}>• {h}</Text>
+          ))}
         </View>
 
         {/* Location Information */}
         <View style={[styles.infoCard, dark ? styles.infoCardDark : null]}>
           <Text style={[styles.title, dark ? styles.titleDark : null]}>Location Information</Text>
-          <Text style={styles.text}>• Starting Point: Colombo Fort Bus Stand</Text>
-          <Text style={styles.text}>• Ending Point: Kandy Goods Shed Bus Stand</Text>
+          <Text style={styles.text}>• Starting Point: {details?.locationInfo?.start}</Text>
+          <Text style={styles.text}>• Ending Point: {details?.locationInfo?.end}</Text>
         </View>
 
         {/* Map Button */}

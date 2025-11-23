@@ -16,16 +16,37 @@ export default function TransportCard({ route }) {
     dispatch(toggleFavourite(route));
   };
 
+  // Local image map: map known route ids (or keys) to local assets.
+  // Add the corresponding PNG files to `assets/` (e.g. colombo-kandy.png).
+  const IMAGE_MAP = {
+    'colombo-kandy-fallback': require('../../assets/colombo-kandy.png'),
+    'colombo-galle-fallback': require('../../assets/colombo-galle.png'),
+    'colombo-ella-fallback': require('../../assets/colombo-ella.png')
+  };
+
+  // Determine image source: prefer explicit local mapping, then route.thumbnail (remote or local), then logo.
+  const imgSource = (() => {
+    if (route && route.id && IMAGE_MAP[route.id]) return IMAGE_MAP[route.id];
+    if (route && route.title) {
+      const t = route.title.toLowerCase();
+      if (t.includes('kandy') && IMAGE_MAP['colombo-kandy-fallback']) return IMAGE_MAP['colombo-kandy-fallback'];
+      if (t.includes('galle') && IMAGE_MAP['colombo-galle-fallback']) return IMAGE_MAP['colombo-galle-fallback'];
+      if (t.includes('ella') && IMAGE_MAP['colombo-ella-fallback']) return IMAGE_MAP['colombo-ella-fallback'];
+    }
+    if (route && route.thumbnail) return (typeof route.thumbnail === 'string') ? { uri: route.thumbnail } : route.thumbnail;
+    return require('../../assets/logo.png');
+  })();
+
   return (
     <TouchableOpacity
       style={[styles.card, dark ? styles.cardDark : null]}
       onPress={() => navigation.navigate('Details', { transport: route })}
     >
       {/* Image */}
-      <Image source={{ uri: route.thumbnail }} style={styles.image} />
+      <Image source={imgSource} style={styles.image} />
 
       {/* Route Name */}
-      <Text style={[styles.title, dark ? styles.titleDark : null]}>Colombo to Kandy</Text>
+      <Text style={[styles.title, dark ? styles.titleDark : null]}>{route.title || 'Colombo to Kandy'}</Text>
 
       {/* Description */}
       <Text numberOfLines={2} style={[styles.description, dark ? styles.descriptionDark : null]}>
@@ -52,7 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 10,
     minWidth: 140,
-    maxWidth: '48%'
+    maxWidth: '100%'
   },
   cardDark: { backgroundColor: '#0b574f' },
 

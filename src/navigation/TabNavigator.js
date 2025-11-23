@@ -22,14 +22,14 @@ export default function TabNavigator() {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle,
-        tabBarActiveTintColor: '#ffffff',
-        tabBarInactiveTintColor: '#ffffff',
+        tabBarActiveTintColor: '#aeeeee',
+        tabBarInactiveTintColor: '#ffffff88',
         tabBarIcon: ({ focused, color, size }) => {
           let name = 'home';
           if (route.name === 'Home') name = 'home';
           else if (route.name === 'Favourites') name = 'heart';
           else if (route.name === 'Profile') name = 'user';
-          return <Feather name={name} size={size ?? 22} color={'#ffffff'} />;
+          return <Feather name={name} size={size ?? 22} color={color} />;
         }
       })}
     >
