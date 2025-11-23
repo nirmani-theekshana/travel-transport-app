@@ -9,7 +9,7 @@ export default function SplashScreen({ navigation }) {
       <View style={styles.top} />
 
       <Text style={[styles.title, dark ? styles.titleDark : null]}>TravelBuddy</Text>
-      <Text style={[styles.subtitle, dark ? styles.subtitleDark : null]}>Plan your journey.\nTravel with confidence.</Text>
+      <Text style={[styles.subtitle, dark ? styles.subtitleDark : null]}>Plan your journey. Travel with confidence.</Text>
 
       <Image source={require('../../assets/logo.png')} style={styles.logo} />
 
