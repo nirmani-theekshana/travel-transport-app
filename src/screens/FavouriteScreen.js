@@ -12,6 +12,7 @@ export default function FavouriteScreen({ navigation }) {
     'colombo-kandy-fallback': require('../../assets/colombo-kandy.png'),
     'colombo-galle-fallback': require('../../assets/colombo-galle.png'),
     'colombo-ella-fallback': require('../../assets/colombo-ella.png')
+    , 'colombo-rathnapura-fallback': require('../../assets/colombo-rathnapura.png')
   };
 
   return (

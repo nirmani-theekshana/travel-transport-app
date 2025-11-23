@@ -17,7 +17,8 @@ import ROUTE_DESCRIPTIONS from '../data/routeDescriptions';
 const IMAGE_MAP = {
   'colombo-kandy-fallback': require('../../assets/colombo-kandy.png'),
   'colombo-galle-fallback': require('../../assets/colombo-galle.png'),
-  'colombo-ella-fallback': require('../../assets/colombo-ella.png')
+  'colombo-ella-fallback': require('../../assets/colombo-ella.png'),
+  'colombo-rathnapura-fallback': require('../../assets/colombo-rathnapura.png')
 };
 
 export default function DetailsScreen({ route, navigation }) {

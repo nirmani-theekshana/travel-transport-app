@@ -31,6 +31,7 @@ export default function HomeScreen({ navigation }) {
 
   const matchKandy = findFirstMatch(['colombo', 'kandy']);
   const matchGalle = findFirstMatch(['colombo', 'galle']);
+  const matchRathna = findFirstMatch(['colombo', 'rathnapura']);
   const matchElla = findFirstMatch(['colombo', 'ella']);
 
   const displayRoutes = [];
@@ -64,6 +65,18 @@ export default function HomeScreen({ navigation }) {
       title: 'Colombo to Ella',
       thumbnail: 'https://via.placeholder.com/600x300.png?text=Colombo+to+Ella',
       description: 'Scenic route from Colombo to Ella through the hill country.'
+    });
+  }
+
+  // Colombo -> Rathnapura (add after Ella)
+  if (matchRathna) {
+    if (!displayRoutes.some(r => r.id === matchRathna.id)) displayRoutes.push(matchRathna);
+  } else {
+    displayRoutes.push({
+      id: 'colombo-rathnapura-fallback',
+      title: 'Colombo to Rathnapura',
+      thumbnail: 'https://via.placeholder.com/600x300.png?text=Colombo+to+Rathnapura',
+      description: 'Direct transport route from Colombo to Rathnapura.'
     });
   }
 

@@ -49,6 +49,23 @@ const ROUTE_DESCRIPTIONS = {
     locationInfo: { start: 'Colombo Fort', end: 'Ella Railway Station' },
     mapQuery: 'Colombo to Ella'
   }
+,
+  'colombo-rathnapura-fallback': {
+    id: 'colombo-rathnapura-fallback',
+    title: 'Colombo to Rathnapura',
+    description:
+      'Direct route connecting Colombo and Rathnapura. This service is commonly used by local commuters and visitors heading to Rathnapura for business or sightseeing. The journey passes through suburban and rural scenery.',
+    schedule: ['First Bus: 5:30 AM', 'Last Bus: 8:30 PM', 'Frequency: Several services daily'],
+    duration: 'Approx. 2.5 - 3 hours (depending on service and traffic)',
+    ticketPrice: ['Standard: Rs. 220', 'AC: Rs. 350'],
+    highlights: [
+      'Runs via Ratnapura highway',
+      'Stops at major junctions and towns en route',
+      'Good access to local markets and gem-mining areas'
+    ],
+    locationInfo: { start: 'Colombo Fort Bus Stand', end: 'Rathnapura Bus Stand' },
+    mapQuery: 'Colombo to Rathnapura'
+  }
 };
 
 export default ROUTE_DESCRIPTIONS;
